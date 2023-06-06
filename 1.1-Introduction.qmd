@@ -1,0 +1,173 @@
+---
+title: "What do you want to say with your plot?"
+subtitle: "Introduction"
+author:
+  - Elizabeth King
+  - Kevin Middleton
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    standalone: true
+    self-contained: true
+    logo: QMLS_Logo.png
+    slide-number: true
+    show-slide-number: all
+    link-external-newwindow: true
+bibliography: DataViz.bib
+csl: evolution.csl
+---
+
+## Module overview
+
+```{r}
+#| label: setup
+#| echo: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(cowplot)
+ggplot2::theme_set(theme_cowplot())
+```
+
+1. What do you want to say with your plot?
+    - Plot styles
+    - Data wrangling
+    - Ethics
+2. Mapping information onto a plot
+3. Constructing complex plots
+4. Designing reusable plotting code
+5. Finishing touches
+
+
+## Module prerequisites
+
+- *Quantitative Methods in Life Sciences 1*
+- Updated R and RStudio
+- Basics of data import and manipulation
+- Basics of `ggplot`
+
+
+## Relevant *Quantitative Methods 1* course materials
+
+- Week 2: Data organization, loading, visualization
+- Week 3: Tidy data and transformations
+- [Course files on Github](https://github.com/kmiddleton/quant_methods)
+  - Clone to your computer for reference
+- [Course videos on YouTube](https://www.youtube.com/playlist?list=PLeIk-G-wZpqx1yW49XAHqoccBXhNJrUSu) 
+
+
+## Resources
+
+- Grolemund and Wickham [-@Grolemund2017-jh]. [R for Data Science](https://r4ds.had.co.nz/)
+- Wickham [-@Wickham2016-tm]. [ggplot2](https://ggplot2-book.org/), 3rd ed. *In-progress*
+- Baumer et al. [-@Baumer2021-nm]. [Modern Data Science with R](https://mdsr-book.github.io/mdsr2e/)
+- Wilke [-@Wilke2019-il]. [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/index.html)
+- Healy [-@Healy2018-cx]. [Data Visualization: A Practical Introduction](https://socviz.co/index.html#preface)
+- [ggplot2 cheatsheet](https://www.maths.usyd.edu.au/u/UG/SM/STAT3022/r/current/Misc/data-visualization-2.1.pdf)
+- [Tidyverse style guide](https://style.tidyverse.org/)
+- [The Work of Edward Tufte](https://www.edwardtufte.com/tufte/): Data-to-ink ratio
+
+
+## What we cover and don't cover
+
+Do:
+
+- Basics pretty broadly
+- Common cases you will encounter
+
+Don't:
+
+- Every possible use case
+
+
+## Dual motivations for this module
+
+1. Thinking about what "story" you want to tell with your plots / figures / images
+2. Learning about the details of how to show what you want to show.
+
+
+## Plotting options in R
+
+- Base R
+- Lattice
+- `ggplot` and the `tidyverse`
+  - [ggplot Extensions](https://exts.ggplot2.tidyverse.org/gallery/)
+
+
+## Packages we will use often
+
+- [tidyverse](https://www.tidyverse.org/) Data wrangling
+  - tidyr
+  - dplyr
+  - etc.
+- [cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html) Compositing and refining plots
+  - `ggplot2::theme_set(cowplot::theme_cowplot())` is almost always in the setup chunk 
+- [patchwork](https://patchwork.data-imaginist.com/) Compositing and refining plots
+- [paletteer](https://emilhvitfeldt.github.io/paletteer/) Unifies color palette options
+
+
+## Why visualize data? {.scrollable}
+
+```{r}
+ds <- read_csv("Data/Datasaurus_data.csv",
+               col_names = c("x1","x2"),
+               show_col_types = FALSE)
+knitr::kable(ds)
+```
+
+
+## Why visualize data? {.scrollable}
+
+```{r}
+ds |> 
+  summarize(across(.cols = everything(),
+                   .fns = list(Mean = mean, `Std. Dev.` = sd))) |> 
+  mutate(across(.fns = round, digits = 2)) |> 
+  knitr::kable()
+```
+
+. . .
+
+What is the correlation?
+
+```{r}
+#| echo: true
+with(ds, cor.test(x1, x2))
+```
+
+
+## Visualization reveals patterns
+
+```{r}
+ggplot(ds, aes(x = x1, y = x2)) +
+  geom_point(color = "navy") +
+  scale_x_continuous(limits = c(0, 100)) +
+  scale_y_continuous(limits = c(0, 100)) +
+  coord_fixed() +
+  labs(title = expression(paste("Alberto Cairo's ",italic("Datasaurus"))))
+```
+
+
+## General rules of plot design
+
+- Some definitely bad options, many possible good designs
+- Think about communication
+- Personal preference enters
+
+
+## Presentation-quality plots
+
+Keep in mind throughout this module:
+
+- Plot creation is an iterative process
+- Remember what "problems" you have solved before
+- Keep a code "gallery" of those solutions
+- Mastering ggplot takes time and experience
+
+
+## References
+
+::: {#refs}
+:::
+

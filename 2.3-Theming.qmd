@@ -1,0 +1,333 @@
+---
+title: "Theming: Customizing plots"
+author:
+  - Elizabeth King
+  - Kevin Middleton
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    standalone: true
+    self-contained: true
+    logo: QMLS_Logo.png
+    slide-number: true
+    show-slide-number: all
+    link-external-newwindow: true
+---
+
+## What can you customize?
+
+```{r}
+#| label: setup
+#| echo: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(paletteer)
+library(cowplot)
+ggplot2::theme_set(theme_cowplot())
+
+library(Data4Ecologists)
+library(abdData)
+```
+
+(Nearly) everything.
+
+
+## Blank slate
+
+There is a ggplot here:
+
+```{r}
+#| echo: true
+ggplot() +
+  theme_void()
+```
+
+
+## `gg`-this and `gg`-that
+
+- [Lots of packages](https://exts.ggplot2.tidyverse.org/) have plotting functionality built on top of `ggplot`
+- Not all play nicely with regular `ggplot` theme elements
+  - Can't `+` elements, limited ability to modify `theme()` elements, etc.
+  - Your mileage may vary
+
+
+## Scales
+
+`scale_` handles changing how aesthetics are represented in plots
+
+- `scale_x_`
+- `scale_y_`
+- `scale_color_`
+- `scale_fill_`
+- `scale_shape_`
+- etc.
+
+
+## Types of scales
+
+`scale_`aesthetic`_`[type]{style="color: #CB3570"} where [type]{style="color: #CB3570"} is
+
+- `continuous`
+- `discrete`
+- `manual`
+- `date`, `time`, `datetime`
+- etc.
+
+Different aesthetics have different scale types available
+
+- RStudio tab completion is your friend here: `scale_x`-[Tab]{style="color: #CB3570"}
+
+
+## `scale_x_` and `scale_y_`
+
+Most commonly:
+
+- `scale_{xy}_continuous`: Continuous
+- `scale_{xy}_discrete`: Categorical
+- `scale_{xy}_log10`: log~10~ transformation
+- `scale_{xy}_sqrt`: Square-root transformation
+- `scale_{xy}_reverse`: Reverse the axis
+
+
+## Electric fish diversity and tributaries {.scrollable}
+
+Species abundance of electric fish upstream and downstream of the entrance of a tributary in the Amazon basin.
+
+```{r}
+EF <- ElectricFish |> 
+  rename(Tributary = tributary,
+         n_Upstream = species.upstream,
+         n_Downstream = species.downstream) |> 
+  arrange(Tributary)
+EF |> knitr::kable()
+```
+
+
+## Electric fish visualization
+
+1. Bar plot of `n_Upstream` and `n_Downstream` diversity by `Tributary`
+2. Scatter plot of `n_Upstream` vs. `n_Downstream`
+
+
+## Bar plot
+
+```{r}
+#| echo: true
+#| output-location: slide
+EF_bar <- EF |> 
+  pivot_longer(cols = -Tributary,
+               names_to = "Up_Down",
+               values_to = "n_Species") |> 
+  ggplot(aes(x = Tributary,
+             y = n_Species,
+             fill = Up_Down,
+             group = Up_Down)) +
+  geom_bar(stat = "identity",
+           position = position_dodge(width = 0.9))
+EF_bar
+```
+
+
+## Bar plot refinements
+
+- `ggplot`s are additive, so we can "add" to an existing plot.
+- Change axis limits (but see *Ethics in visualization*)
+- Two ways to change axis labels
+
+```{r}
+#| echo: true
+#| output-location: slide
+EF_bar +
+  scale_y_continuous(limits = c(0, 50),
+                     breaks = seq(0, 50, by = 5)) +
+  scale_x_discrete(name = "Upstream/Downstream") +
+  labs(y = "Number of Species",
+       title = "Species Diversity in the Amazon")
+```
+
+
+## Scatter plot
+
+What is the relationship between upstream and downstream diversity?
+
+```{r}
+#| echo: true
+#| output-location: slide
+ggplot(EF, aes(x = n_Upstream,
+               y = n_Downstream)) +
+  geom_point()
+```
+
+
+## Scatter plot refinements
+
+- Add a straight line with a slope of 1
+- Change the color and size of all points
+
+```{r}
+#| echo: true
+#| output-location: slide
+#| code-line-numbers: "3-4"
+ggplot(EF, aes(x = n_Upstream,
+               y = n_Downstream)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
+  geom_point(color = "tomato", size = 3)
+```
+
+
+## Changing aspect ratio of the axes
+
+- Make the plot square (`coord_equal`)
+- Set the axis ranges to be equal (`xlim`, `ylim`)
+
+```{r}
+#| echo: true
+#| output-location: slide
+ggplot(EF, aes(x = n_Upstream,
+               y = n_Downstream)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
+  geom_point(color = "tomato", size = 3) +
+  coord_equal(xlim = c(0, 30), ylim = c(0, 30))
+```
+
+
+## `scale_color_` and `scale_fill_`
+
+- Set the fill manually
+- Include a line break in the legend title string with `\n`
+
+```{r}
+#| echo: true
+#| output-location: slide
+EF_bar +
+  scale_fill_manual(values = c("orange", "darkgreen"),
+                    name = "Upstream /\nDownstream")
+```
+
+
+## Automated color and fill scales
+
+- [RColorBrewer](https://colorbrewer2.org/)
+- [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html)
+- [paletteer](https://emilhvitfeldt.github.io/paletteer/)
+
+```{r}
+#| echo: true
+#| output-location: slide
+EF_bar +
+  scale_fill_brewer(type = "qual")
+```
+
+
+## `scale_shape_`
+
+- ggplot inherits the standard set of R point shapes
+- [Point shapes in R](https://r-graphics.org/recipe-scatter-shapes)
+
+
+## `scale_size_`
+
+- [Size by area (default) or radius](https://ggplot2-book.org/scale-other.html)
+- Set the `range` to control the output scale
+
+```{r}
+#| echo: true
+#| output-location: slide
+#| code-line-numbers: "5-11"
+EF_size <- EF |> 
+  pivot_longer(cols = -Tributary,
+               names_to = "Up_Down",
+               values_to = "n_Species") |> 
+  ggplot(aes(x = Tributary,
+             y = Up_Down,
+             label = n_Species,
+             size = n_Species)) +
+  geom_point(alpha = 0.25) +
+  geom_text() +
+  scale_size(range = c(1, 10))
+EF_size
+```
+
+
+## `theme()` changes aspects of plots
+
+- Fully custom and reusing themes in a few weeks
+- See `?theme` for options
+- [ggplot book has many examples](https://ggplot2-book.org/polishing.html)
+
+```{r}
+EF_bar
+```
+
+
+## Changing axis components
+```{r}
+#| echo: true
+#| output-location: slide
+EF_bar +
+  labs(x = "Stream") +
+  scale_fill_manual(values = c("darkred", "navy"),
+                    name = "Location",
+                    labels = c("Downstream", "Upstream")) +
+  theme(axis.text = element_text(size = 9),
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1),
+        axis.title.y = element_text(face = "bold"),
+        axis.title.x = element_blank(),
+        legend.title = element_text(size = 10, face = "italic"),
+        legend.text = element_text(size = 9))
+```
+
+
+## (Re)moving and reshaping the legend
+
+- Remove the legend
+
+```{r}
+#| echo: true
+EF_size +
+  theme(legend.position = "none")
+```
+
+
+## Customizing the legend
+
+```{r}
+#| echo: true
+#| output-location: slide
+ggplot(EF, aes(x = n_Upstream,
+               y = n_Downstream,
+               color = Tributary)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
+  geom_point(size = 5) +
+  scale_color_viridis_d(guide = guide_legend(ncol = 3,
+                                             override.aes = list(size = 2))) +
+  coord_equal(xlim = c(0, 30), ylim = c(0, 30)) +
+  labs(x = "Upstream Species",
+       y = "Downstream Species",
+       title = "Species Diversity in the Amazon") +
+  theme(legend.title = element_text(size = 10),
+        legend.text = element_text(size = 9),
+        legend.position = c(0.35, 0.175),
+        legend.box.background = element_rect(color = "black", linewidth = 1),
+        legend.box.margin = margin(4, 4, 4, 4),
+        axis.title = element_text(face = "bold"))
+```
+
+
+## Using `element_blank()` to remove plot elements
+
+- Remove the `x`-axis completely
+- Remove the space between the labels and bars
+
+```{r}
+#| echo: true
+#| output-location: slide
+#| message: false
+EF_bar +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme(axis.ticks.x = element_blank(),
+        axis.line.x = element_blank())
+```
+

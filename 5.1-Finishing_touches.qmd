@@ -1,0 +1,93 @@
+---
+title: "Finishing touches"
+subtitle: "Planning plots for publication"
+author:
+  - Elizabeth King
+  - Kevin Middleton
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    standalone: true
+    self-contained: true
+    logo: QMLS_Logo.png
+    slide-number: true
+    show-slide-number: all
+    link-external-newwindow: true
+---
+
+## This week
+
+```{r}
+#| label: setup
+#| echo: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(cowplot)
+ggplot2::theme_set(theme_cowplot())
+library(patchwork)
+```
+
+1. Planning plots for publication
+2. Font/point/line size
+3. Complex plot operations
+4. Reproducible visualization
+
+
+## Planning for public consumption
+
+*Manuscripts*:
+
+- Don't let the journal resize your figures
+- Determine the column and page dimensions of your intended journal
+- You might have to reformat figures for a different journal
+
+*Presentations*:
+
+- Don't present talks or posters with microtext.
+
+
+## Manuscripts
+
+Print a page at 100% (no "fit-to-page"). Measure with a ruler.
+
+:::{style="text-align: center;"}
+
+![](Images/example_page.png){width="65%"}
+
+:::
+
+
+## Plan for figure dimensions
+
+- Single column: long figures / panels
+- Two column: wide figures / panels
+
+How does your eye move around the figure?
+
+- Left to right
+- Top to bottom
+
+
+## Scaling
+
+Everything in a figure needs to be readable
+
+- Text
+- Labels
+- Lines
+- Colors and gradients
+
+
+## Figure output
+
+Use vector output (pdf, svg, eps, wmf [Windows]) for as long as possible.
+
+- `ggsave()`
+  - `width`, `height`
+- `cowplot::save_plot()`
+  - `base_width`, `base_height`
+  - Works well with `plot_grid()`
+  - Adjust figure aspect ratio
+

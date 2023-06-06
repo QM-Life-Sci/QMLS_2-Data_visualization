@@ -1,0 +1,187 @@
+---
+title: "Problem Set 2"
+author:
+  - Your Name Here
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    toc-title: Contents
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+
+```
+
+
+## Aedes food variability^[Zeller, M., and J. C. Koella. 2016. Effects of food variability on growth and reproduction of *Aedes aegypti*. *Ecol. Evol.* 6:552–559.]
+
+Zeller and Koella studied the effects of low vs high food levels at different stages of development on various life history traits in mosquitoes. Read in this dataset (`Aedes_food.txt`) and examine its structure. Make the column names more informative by changing `ef` to `early_food` and `lf` to `late_food`. Also change the values in these columns to `low` (currently coded as `L`) and `high` (currently coded as `H`). Add a single column containing all four combinations of early and late food (e.g., high_high, high_low...).   
+
+
+```{r}
+
+```
+
+Two traits the authors are interested in are survival time and fecundity. The columns beginning with `eggs` are the number of eggs laid by each individual at each age. The column `adult survival` is the number of days each individual lived following emergence. Make a plot of `adultsurvival` vs `eggs4` with color indicating early food and shape indicating late food.
+
+Adjust the size of the points, transparency, and axis labels as you'd like.
+
+```{r}
+
+```
+
+Notice any warning messages. Compare your axis limits to the minimum and maximum values for your variables as well as the points plotted. Resolve any issues.
+
+```{r}
+
+```
+
+Most egg number values are less than 50 and most survival is above 30. Change the x and y limits to limit the range to these values. 
+
+```{r}
+
+```
+
+Observe any warnings. Note that if you decided to restrict your axis limits to exclude points, you would always need to justify and explain that decision in the figure legend and/or paper. Paying attention to and finding the reason for these warnings from ggplot should never be ignored (even if there are `NA` values). You should always know why it is warning you about the exact number of points. 
+
+Try using the single column indicating the four food combinations as a color aesthetic instead of both color and shape. 
+
+```{r}
+
+```
+
+Which plot - that with both shape and color aesthetics or just the color aesthetic do you think communicates the pattern more effectively?
+
+>
+
+
+Let's use the single column with four levels plot to add regression lines for each food treatment using `geom_smooth` with `method = "lm"`. 
+
+```{r}
+
+```
+
+There are different point types in R you might want to use in some applications. For example, if you add `pch = 21` you can add an outline to points to make them more defined. Try this with the plot you just made and adjust aesthetics as needed to make colored points with a black outline. Make sure your regression lines maintain their different colors (hint: you can use `aes()` within different geoms too). 
+
+```{r}
+
+```
+
+In many cases, using color aesthetics is the best approach with customization of which colors to use with packages and or functions like scale_color_manual and this often helps avoid bugs. However, in some cases with complex multi-element plots, you might need to take full control of the color of your points or some other element. Let's make this same plot using this method. 
+
+1. Choose four colors from the [R color chart](https://rstudio-pubs-static.s3.amazonaws.com/3486_79191ad32cf74955b4502b8530aad627.html) or use a brewer to generate four colors.
+2. Use `case_when()` to make a column in your tibble that specifies one of these colors for each of the four combinations.
+3. Now use this new column as your fill aesthetic and observe what happens
+
+```{r}
+
+```
+
+You should have seen that your colors are just treated as categories and given an automatic color. Now tell R you want to use those exact colors by using `scale_fill_identity()` and/or `scale_color_identity()`. Note that you will not have a legend unless you specify `breaks` and `labels` to this function. You'll see more of this when we look at customizing colors in plots more later.    
+
+```{r}
+
+```
+
+Check your color choices using one of the packages we showed you in lecture to test the accessibility of your plot for color blindness. Change your colors if needed. 
+
+```{r}
+
+```
+
+Let's look at how the food treatments affected the size of the mosquitoes at age 4 (`size.day4`). Make a plot of age 4 size vs. early food and color the points by late food. Try out the following jitter values (0.1, 0.2, 0.3, 0.4, 0.5), and pick one that works well. 
+
+```{r}
+
+```
+
+We can improve our plot by ordering the factors so low comes before high and dodging the points by late food as well. Again, play around with both the jitter and dodge widths (and alpha) to find values that work well for this plot. 
+
+```{r}
+
+```
+
+Let's add means to our plot. Make a tibble using group_by and summarize with the columns early_food, late_food, and size.day4 that holds the treatments and mean values, making sure the column names match what you've been plotting so far. Then add these means to your plot with another geom_point and make the points pretty big with `size = 5`. 
+
+```{r}
+
+```
+
+Which aspects of your plot were automatically applied to your mean data and which were not? How does ggplot determine this?
+
+>
+
+It is difficult to see the points when they are the same color so pick a distinguishing color and set that for the means. Also make sure the points are aligned with the correct data (hint: if you use color as your grouping variable, you might need to also use group_by so it is maintained when you change your colors for the mean points). 
+
+```{r}
+
+```
+
+
+## Bat calcars^[Stanchak, K. E., J. H. Arbour, and S. E. Santana. 2019. Anatomical diversification of a skeletal novelty in bat feet. *Evolution* 73:1591–1603.]
+
+Stanchak et al. measured several skeletal aspects of bat limbs for over 200 species of bats. The bat calcar is a small cartilaginous projection from the ankle that helps to support the wing membrane. They hypothesized that the size of the calcar might be related to feeding ecology.
+
+Read in the `Bat_calcar.csv` data. Make a new tibble that only includes bat families with at least 4 observations. 
+
+```{r}
+
+```
+
+To explore the relationship between calcar length and leg length, plot , `Tib_mean` (average tibia length) versus `Cal_mean` (average calcar length). Facet by bat family. 
+
+```{r}
+
+```
+
+The different bat families have fairly different ranges. Make this plot again but allow the axes to vary in each. 
+
+```{r}
+
+```
+
+Which of these sets of plots do you think captures the pattern more accurately?
+
+>
+
+
+## Stickleback life history^[Ghani, N. I. A., G. Herczeg, T. Leinonen, and J. Merilä. 2013. Evidence for genetic differentiation in timing of maturation among nine-spined stickleback populations. *J. Evol. Biol.* 26:775–782.]
+
+Ghani et al. performed a study looking at genetic differentiation in the timing of maturity in two stickleback populations using a laboratory breeding experiment where they raised different families of sticklebacks and measuring the timing of their maturation. Read in the `Stickleback_maturation.xlsx` data and examine its structure. 
+
+
+```{r}
+
+```
+
+Make a plot of Maturation day versus Sex and color the points by family.
+
+```{r}
+
+```
+
+You probably noticed some issues with how the columns are coded (e.g., numeric vs factor). Alter these or create new columns to create the plot you want. Note that in this dataset, males are coded as 1 and females as 0. 
+
+```{r}
+
+```
+
+Notice any warnings and investigate their source and resolve any issues so you don't get a warning when you plot. 
+
+
+```{r}
+
+```
+
+
+Because we just want to see different families but the numbers are not meaningful, let's drop the legend using `theme`. And with males and females labeled, we probably don't need the x axis label either so drop that too. 
+
+```{r}
+
+```
