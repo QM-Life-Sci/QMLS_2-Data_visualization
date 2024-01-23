@@ -127,9 +127,9 @@ What ideas do you have for the type of plot you might want to make that could co
 
 Below is a figure from the paper looking at female presence before and after hoots and two other types of calls. 
 
-![](https://www.journals.uchicago.edu/cms/10.1086/675393/asset/images/large/fg4.jpeg){width=50%}
+![](https://i.imgur.com/nfFy1GS.jpg){width=50% fig-align="center"}
 
-Examine the datset you just loaded. Is there a better way to present these data?
+Examine the dataset you just loaded. Is there a better way to present these data?
 
 > Use a bar chart to show the counts. Or just make a table, because it's not that many numbers.
 
