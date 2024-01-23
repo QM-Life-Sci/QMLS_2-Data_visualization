@@ -1,0 +1,34 @@
+---
+title: "Final Project"
+author:
+  - Your Name Here
+format: 
+  html:
+    embed-resources: true
+---
+
+## Instructions
+
+There is no problem set for week 5. You will complete a final project instead. The final project goal is to generate 4-6 publication quality images.
+
+You should try to use your own data, perhaps for a manuscript or a proposal that you are working on already. This is not strictly necessary, but we think that you will get the most out of this project if it results in something that you potentially will be using in the future.
+
+You will not work in a group for this project (i.e., everyone will be doing their own independent project). You are welcome to talk to each other and ask us questions. Don't view this as a test, but rather as an opportunity to exercise all that you have learned about data visualization and perhaps make some progress on figures for an actual presentation or publication you are planning.
+
+
+## Guidelines
+
+- At least 2 paper/manuscript/dissertation figures
+    - Both should have multiple panels
+    - Include appropriate labels and figure legends
+- At least 1 oral presentation figure (e.g., for a PowerPoint presentation)
+- At least 1 poster presentation figure 
+- All figures should include:
+    - Appropriate font and geometry sizes
+    - Appropriate alt text
+
+
+## Presentation
+
+You will present your figures at [DataPhiles](https://elizabethking.org/dataphiles/), which is a community of people interested in data that meets on Zoom on Wednesdays at noon. We will schedule you for a time slot towards the end of the module. This is a chance to get feedback from the class and from others.
+
