@@ -17,7 +17,7 @@ The following are packages you will need for this course:
   - tidyverse
   - cowplot
   - patchwork
-  - paleteer
+  - paletteer
 
 Install these packages using `install.packages()` in the R console (e.g. `install.packages("tidyverse", dep = TRUE))`. Remember you only need to do this once and then you will use `library()` to load them. If you already have these packages, update them to the latest version using the `update.packages()` function.
 
