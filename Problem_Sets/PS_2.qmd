@@ -28,7 +28,7 @@ Zeller and Koella studied the effects of low vs high food levels at different st
 
 ```
 
-Two traits the authors are interested in are survival time and fecundity. The columns beginning with `eggs` are the number of eggs laid by each individual at each age. The column `adult survival` is the number of days each individual lived following emergence. Make a plot of `adultsurvival` vs `eggs4` with color indicating early food and shape indicating late food.
+Two traits the authors are interested in are survival time and fecundity. The columns beginning with `eggs` are the number of eggs laid by each individual at each age. The column `adultsurvival` is the number of days each individual lived following emergence. Make a plot of `adultsurvival` vs `eggs4` with color indicating early food and shape indicating late food.
 
 Adjust the size of the points, transparency, and axis labels as you'd like.
 
@@ -73,7 +73,7 @@ There are different point types in R you might want to use in some applications.
 
 ```
 
-In many cases, using color aesthetics is the best approach with customization of which colors to use with packages and or functions like scale_color_manual and this often helps avoid bugs. However, in some cases with complex multi-element plots, you might need to take full control of the color of your points or some other element. Let's make this same plot using this method. 
+In many cases, using color aesthetics is the best approach with customization of which colors to use with packages and or functions like `scale_color_manual()` and this often helps avoid bugs. However, in some cases with complex multi-element plots, you might need to take full control of the color of your points or some other element. Let's make this same plot using this method. 
 
 1. Choose four colors from the [R color chart](https://rstudio-pubs-static.s3.amazonaws.com/3486_79191ad32cf74955b4502b8530aad627.html) or use a brewer to generate four colors.
 2. Use `case_when()` to make a column in your tibble that specifies one of these colors for each of the four combinations.

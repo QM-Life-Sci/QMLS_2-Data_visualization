@@ -42,7 +42,7 @@ DD <- read_delim("../Data/Aedes_food.txt",
 
 ```
 
-Two traits the authors are interested in are survival time and fecundity. The columns beginning with `eggs` are the number of eggs laid by each individual at each age. The column `adult survival` is the number of days each individual lived following emergence. Make a plot of `adultsurvival` vs `eggs4` with color indicating early food and shape indicating late food.
+Two traits the authors are interested in are survival time and fecundity. The columns beginning with `eggs` are the number of eggs laid by each individual at each age. The column `adultsurvival` is the number of days each individual lived following emergence. Make a plot of `adultsurvival` vs `eggs4` with color indicating early food and shape indicating late food.
 
 Adjust the size of the points, transparency, and axis labels as you'd like.
 
@@ -117,7 +117,7 @@ DD |>
   drop_na(any_of(c("eggs4", "adultsurvival"))) |>
   ggplot(aes(eggs4, adultsurvival, color = EL_food)) +
   geom_point(alpha = 0.75, size = 2) +
-  geom_smooth(method = 'lm', se = FALSE)+
+  geom_smooth(formula = 'y ~ x', method = 'lm', se = FALSE)+
   ylab("Adult Survival") +
   xlab("Age 4 Egg Number")
 
@@ -132,13 +132,14 @@ DD |>
   drop_na(any_of(c("eggs4","adultsurvival"))) |>
   ggplot(aes(eggs4, adultsurvival, fill = EL_food)) +
   geom_point(alpha = 0.75, size = 2, pch = 21) +
-  geom_smooth(method = 'lm', se = FALSE, aes(color = EL_food))+
+  geom_smooth(formula = 'y ~ x',
+              method = 'lm', se = FALSE, aes(color = EL_food))+
   ylab("Adult Survival") +
   xlab("Age 4 Egg Number")
 
 ```
 
-In many cases, using color aesthetics is the best approach with customization of which colors to use with packages and or functions like scale_color_manual and this often helps avoid bugs. However, in some cases with complex multi-element plots, you might need to take full control of the color of your points or some other element. Let's make this same plot using this method. 
+In many cases, using color aesthetics is the best approach with customization of which colors to use with packages and or functions like `scale_color_manual()` and this often helps avoid bugs. However, in some cases with complex multi-element plots, you might need to take full control of the color of your points or some other element. Let's make this same plot using this method. 
 
 1. Choose four colors from the [R color chart](https://rstudio-pubs-static.s3.amazonaws.com/3486_79191ad32cf74955b4502b8530aad627.html) or use a brewer to generate four colors.
 2. Use `case_when()` to make a column in your tibble that specifies one of these colors for each of the four combinations.
@@ -155,7 +156,8 @@ DD |>
                                 EL_food == "high_high" ~ "steelblue")) |>
   ggplot(aes(eggs4, adultsurvival, fill = col_plot)) +
   geom_point(alpha = 0.75, size = 2, pch = 21) +
-  geom_smooth(method = 'lm',se = FALSE, aes(color = col_plot))+
+  geom_smooth(formula = 'y ~ x',
+              method = 'lm',se = FALSE, aes(color = col_plot))+
   ylab("Adult Survival") +
   xlab("Age 4 Egg Number")
 
@@ -174,7 +176,8 @@ p1 <- DD |>
                                 EL_food == "high_high" ~ "steelblue")) |>
   ggplot(aes(eggs4, adultsurvival, fill = col_plot)) +
   geom_point(size = 2, pch = 21) +
-  geom_smooth(method = 'lm', se = FALSE, aes(color = col_plot))+
+  geom_smooth(formula = 'y ~ x',
+              method = 'lm', se = FALSE, aes(color = col_plot))+
   ylab("Adult Survival") +
   xlab("Age 4 Egg Number") +
   scale_fill_identity() +
@@ -237,7 +240,8 @@ s_means <- DD |>
   mutate(early_food = factor(early_food, levels= c("low", "high")),
          late_food = factor(late_food, levels= c("low", "high"))) |>
   group_by(early_food, late_food) |>
-  summarise(size.day4 = mean(size.day4, na.rm = TRUE))
+  summarise(size.day4 = mean(size.day4, na.rm = TRUE),
+            .groups = "drop")
 
 DD |>
   mutate(early_food = factor(early_food, levels= c("low", "high")),
@@ -258,7 +262,7 @@ Which aspects of your plot were automatically applied to your mean data and whic
 
 >
 
-It is difficult to see the points when they are the same color so pick a distinguishing color and set that for the means. Also make sure the points are aligned with the correct data (hint: if you use color as your grouping variable, you might need to also use group_by so it is maintained when you change your colors for the mean points). 
+It is difficult to see the points when they are the same color so pick a distinguishing color and set that for the means. Also make sure the points are aligned with the correct data (hint: if you use color as your grouping variable, you might need to also use `group_by()` so it is maintained when you change your colors for the mean points). 
 
 ```{r}
 #FIXME
@@ -267,7 +271,8 @@ s_means <- DD |>
   mutate(early_food = factor(early_food, levels= c("low", "high")),
          late_food = factor(late_food, levels= c("low", "high"))) |>
   group_by(early_food, late_food) |>
-  summarise(size.day4 = mean(size.day4, na.rm = TRUE))
+  summarise(size.day4 = mean(size.day4, na.rm = TRUE),
+            .groups = "drop")
 
 DD |>
   mutate(early_food = factor(early_food, levels= c("low", "high")),
@@ -279,7 +284,7 @@ DD |>
                                              dodge.width = 0.3,
                                              seed = 89879273)) +
   geom_point(data = s_means, aes(group = late_food), size = 5,
-             position = position_dodge(width = 0.3), color="black") +
+             position = position_dodge(width = 0.3), color = "black") +
   ylab("Age 4 Size") +
   xlab("Early Food")
 
