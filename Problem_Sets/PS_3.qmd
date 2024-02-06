@@ -203,7 +203,7 @@ Add a point and bars for the bootstrapped 95% confidence interval of the mean.
 
 ```
 
-Since these are paired data, we can calculate the per-fish difference between the treatments and test whether the difference is signifiacntly different from zero (paired *t*-test).
+Since these are paired data, we can calculate the per-fish difference between the treatments and test whether the difference is significantly different from zero (paired *t*-test).
 
 - Drop the `Time_min` column (all the points are at 120 min)
 - Pivot the data to wide format, taking the names from "Treatment" and values from "O2_Consumption". The data should now have 6 rows and 3 columns.

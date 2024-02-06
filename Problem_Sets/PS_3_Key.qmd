@@ -289,7 +289,7 @@ D_120 <- D_long |>
 ggplot(D_120, aes(x = Treatment, y = O2_Consumption, group = ID)) +
   geom_point() +
   geom_line() +
-  labs(y = TeX("$Oxygen~Consumption~(\\frac{mg~O_2}{kg / hr})$"),
+  labs(y = TeX(r"(Oxygen Consumption $\left( \frac{mg~O_2}{kg / hr} \right)$)"),
        x = "Time (min)")
 ```
 
@@ -304,11 +304,11 @@ ggplot(D_120, aes(x = Treatment, y = O2_Consumption, group = ID)) +
                size = 1) +
   geom_point(size = 2) +
   geom_line() +
-  labs(y = TeX("$Oxygen~Consumption~(\\frac{mg~O_2}{kg / hr})$"),
+  labs(y = TeX(r"(Oxygen Consumption $\left( \frac{mg~O_2}{kg / hr} \right)$)"),
        x = "Time (min)")
 ```
 
-Since these are paired data, we can calculate the per-fish difference between the treatments and test whether the difference is signifiacntly different from zero (paired *t*-test).
+Since these are paired data, we can calculate the per-fish difference between the treatments and test whether the difference is significantly different from zero (paired *t*-test).
 
 - Drop the `Time_min` column (all the points are at 120 min)
 - Pivot the data to wide format, taking the names from "Treatment" and values from "O2_Consumption". The data should now have 6 rows and 3 columns.
