@@ -263,6 +263,7 @@ EF_bar
 
 
 ## Changing axis components
+
 ```{r}
 #| echo: true
 #| output-location: slide
