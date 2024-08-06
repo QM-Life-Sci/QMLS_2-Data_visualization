@@ -295,7 +295,7 @@ EF_size +
 
 ```{r}
 #| echo: true
-#| output-location: slide
+#| output: false
 ggplot(EF, aes(x = n_Upstream,
                y = n_Downstream,
                color = Tributary)) +
@@ -310,6 +310,32 @@ ggplot(EF, aes(x = n_Upstream,
   theme(legend.title = element_text(size = 10),
         legend.text = element_text(size = 9),
         legend.position = c(0.35, 0.175),
+        legend.box.background = element_rect(color = "black", linewidth = 1),
+        legend.box.margin = margin(4, 4, 4, 4),
+        axis.title = element_text(face = "bold"))
+```
+
+
+## Customizing the legend (edit)
+
+```{r}
+#| echo: true
+#| output-location: slide
+ggplot(EF, aes(x = n_Upstream,
+               y = n_Downstream,
+               color = Tributary)) +
+  geom_abline(slope = 1, intercept = 0, linetype = "dotted") +
+  geom_point(size = 5) +
+  scale_color_viridis_d(guide = guide_legend(ncol = 3,
+                                             override.aes = list(size = 2))) +
+  coord_equal(xlim = c(0, 30), ylim = c(0, 30)) +
+  labs(x = "Upstream Species",
+       y = "Downstream Species",
+       title = "Species Diversity in the Amazon") +
+  theme(legend.title = element_text(size = 10),
+        legend.text = element_text(size = 9),
+        legend.position = "inside",
+        legend.position.inside = c(0.35, 0.175),
         legend.box.background = element_rect(color = "black", linewidth = 1),
         legend.box.margin = margin(4, 4, 4, 4),
         axis.title = element_text(face = "bold"))
