@@ -500,6 +500,7 @@ ggplot() +
              aes(x = log_Area, y = n_Species, color = Landscape_type)) +
   labs(y = "Number of Species", x = "Area (log Ha)") +
   scale_color_paletteer_d(`"rcartocolor::Bold"`, name = "Landscape Type") +
-  theme(legend.position = c(0.8, 0.15))
+  theme(legend.position = "inside",
+        legend.position.inside = c(0.8, 0.15))
 ```
 

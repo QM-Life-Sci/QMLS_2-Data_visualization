@@ -145,7 +145,8 @@ p <- ggplot(palmerpenguins::penguins |>
   geom_point() +
   facet_wrap("species", nrow = 2)
 p +
-  theme(legend.position = c(0.7, 0.1))
+  theme(legend.position = "inside",
+        legend.position.inside = c(0.7, 0.1))
 ```
 
 
