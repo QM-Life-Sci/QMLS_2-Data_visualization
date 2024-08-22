@@ -69,14 +69,14 @@ summary(mod)
 
 Summarize your conclusions regarding the effect of fur trapping over time on lynx population size. 
 
-> The slope of the coefficient for `year` is -30.6 which is significantly different from 0. We woudl conclude that the number of lynx pelts decreases by about 30 per year. If the Hudson's Bay Company had been around at year 0, it would have collected over 56,000 pelts.
+> The slope of the coefficient for `year` is -30.6 which is significantly different from 0. We would conclude that the number of lynx pelts decreases by about 30 per year. If the Hudson's Bay Company had been around at year 0, it would have collected over 56,000 pelts.
 
 Let's construct a plot displaying the linear regression results. Plot pelt number versus year and use `geom_point()` and `geom_smooth(method="lm")`. By default `geom_smooth()` with `lm`, will use the formula y ~ x. You can make this explicit by adding `formula = y ~ x` to the statement.
 
 ```{r}
 #FIXME
 
-LL %>%
+LL |>
   ggplot(aes(year, pelts)) +
   geom_point() +
   geom_smooth(method = 'lm', formula = y ~ x)
@@ -92,7 +92,7 @@ Because these data were collected over time, let's connect the points so we can 
 ```{r}
 #FIXME
 
-LL %>%
+LL |>
   ggplot(aes(year, pelts)) +
   geom_point() +
   geom_line() +
@@ -159,12 +159,12 @@ The first few rows of your resulting tibble should look like this:
 ```{r}
 #FIXME
 
-PPcts <- PP %>% 
-  group_by(Place, PrePost) %>% 
+PPcts <- PP |> 
+  group_by(Place, PrePost) |> 
   summarize("Present" = sum(FemaleVisit.5m), 
             "Absent" = sum(FemaleVisit.5m==0),
-            .groups = "drop") %>%
-  unite("Place_Time", Place:PrePost, sep="_") %>%
+            .groups = "drop") |>
+  unite("Place_Time", Place:PrePost, sep="_") |>
   pivot_longer(!Place_Time, names_to = "Presence", values_to="Counts")
 
 ```
@@ -174,11 +174,13 @@ Now we are ready to make our bar chart with `Place_Time` on the x-axis and `Coun
 ```{r}
 #FIXME
 
-PPcts %>% ggplot(aes(x = Place_Time, Counts, fill = Presence)) +
+PPcts |>
+  ggplot(aes(x = Place_Time, Counts, fill = Presence)) +
   geom_bar(stat="identity", position = "dodge") +
   scale_fill_manual(values = c("steelblue", "darkred")) 
 
-PPcts %>% ggplot(aes(x = Place_Time, Counts, fill = Presence)) +
+PPcts |> 
+  ggplot(aes(x = Place_Time, Counts, fill = Presence)) +
   geom_bar(stat="identity") +
   scale_fill_manual(values = c("steelblue", "darkred")) 
 
@@ -207,7 +209,7 @@ If we are interested in the trade-off between flight muscle mass and ovary mass,
 ```{r}
 #FIXME
 
-CC %>% 
+CC |> 
   ggplot(aes(x = Ovary_Mass, y = DLM_Mass, color = Food)) +
   geom_point()
 
@@ -227,7 +229,7 @@ Correct or drop any problematic data points as you wish.
 
 CC[which(CC$DLM_Mass >40),]
 
-CC <- CC %>% filter(DLM_Mass < 40)
+CC <- CC |> filter(DLM_Mass < 40)
 
 #MED is a typo and should be Med. Fix it. 
 
@@ -242,7 +244,7 @@ Now let's make our plot again.
 ```{r}
 #FIXME
 
-CC %>% 
+CC |> 
   ggplot(aes(x = Ovary_Mass, y = DLM_Mass, color = Food)) +
   geom_point()
 
@@ -262,8 +264,8 @@ CC_long <- pivot_longer(CC,
                         names_to = "Organ",
                         values_to = "Mass")
 
-CC_long %>%
-  filter(Organ %in% c("DLM_Mass", "Ovary_Mass")) %>%
+CC_long |>
+  filter(Organ %in% c("DLM_Mass", "Ovary_Mass")) |>
   ggplot(aes(x = Food, y = Mass, fill = Organ)) +
   geom_boxplot()
 
@@ -274,11 +276,11 @@ Because the masses are on pretty different scales, let's instead try out making 
 ```{r}
 #FIXME
 
-CC %>%
+CC |>
   ggplot(aes(x = DLM_Mass, color = Food)) +
   geom_density()
 
-CC %>%
+CC |>
   ggplot(aes(x = Ovary_Mass, color = Food)) +
   geom_density()
 
