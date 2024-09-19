@@ -108,7 +108,7 @@ Create each subplot separately and assign (save) to an object. Use the saved the
 
 ```{r}
 # FIXME
-p1 <- ggplot(AM, aes(F_mass, M_mass)) +
+p1 <- ggplot(AM, aes(M_mass, F_mass)) +
   geom_abline(slope = 1) +
   geom_point() +
   scale_x_log10() +
