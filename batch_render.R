@@ -9,7 +9,7 @@ packages <- c(
   "clauswilke/colorblindr",
   "concaveman",
   "cowplot",
-  "Data4Ecologists",
+  "jfieberg/Data4Ecologists",
   "easystats",
   "ggforce",
   "ggmap",
